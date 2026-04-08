@@ -2,15 +2,12 @@ import React from 'react';
 import {
   TouchableOpacity,
   Text,
-  StyleSheet,
   ActivityIndicator,
-  StyleProp,
-  ViewStyle,
   TextStyle,
   TouchableOpacityProps,
+  StyleProp,
+  ViewStyle,
 } from 'react-native';
-import { Colors } from '../../constants/colors';
-import { Fonts, FontSizes, Radius, Spacing } from '../../constants/fonts';
 
 type Variant = 'primary' | 'outline' | 'ghost' | 'destructive' | 'secondary';
 type Size = 'sm' | 'md' | 'lg';
@@ -25,6 +22,34 @@ interface ButtonProps extends Omit<TouchableOpacityProps, 'style'> {
   fullWidth?: boolean;
 }
 
+const variantClass: Record<Variant, string> = {
+  primary: 'bg-primary',
+  outline: 'bg-transparent border border-border',
+  ghost: 'bg-transparent',
+  secondary: 'bg-muted',
+  destructive: 'bg-destructive',
+};
+
+const sizeClass: Record<Size, string> = {
+  sm: 'px-4 py-2 rounded-md',
+  md: 'px-5 py-3 rounded-md',
+  lg: 'px-7 py-4 rounded-lg',
+};
+
+const textVariantClass: Record<Variant, string> = {
+  primary: 'text-white font-semibold',
+  outline: 'text-foreground font-semibold',
+  ghost: 'text-foreground font-semibold',
+  secondary: 'text-foreground font-semibold',
+  destructive: 'text-white font-semibold',
+};
+
+const textSizeClass: Record<Size, string> = {
+  sm: 'text-base',
+  md: 'text-lg',
+  lg: 'text-xl',
+};
+
 export default function Button({
   variant = 'primary',
   size = 'md',
@@ -37,108 +62,27 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const isDisabled = disabled || loading;
+  const baseClass = `flex-row items-center justify-center gap-2 ${variantClass[variant]} ${sizeClass[size]}${fullWidth ? ' w-full' : ''}${isDisabled ? ' opacity-50' : ''}`;
 
   return (
     <TouchableOpacity
       activeOpacity={0.8}
       disabled={isDisabled}
-      style={[
-        styles.base,
-        styles[variant],
-        styles[`size_${size}`],
-        fullWidth && styles.fullWidth,
-        isDisabled && styles.disabled,
-        style,
-      ]}
-      {...props}
-    >
+      className={baseClass}
+      style={style}
+      {...props}>
       {loading ? (
         <ActivityIndicator
           size="small"
-          color={variant === 'primary' || variant === 'destructive' ? Colors.white : Colors.primary}
+          color={variant === 'primary' || variant === 'destructive' ? '#ffffff' : '#0A68FF'}
         />
       ) : (
         <Text
-          style={[
-            styles.text,
-            styles[`text_${variant}`],
-            styles[`textSize_${size}`],
-            isDisabled && styles.textDisabled,
-            textStyle,
-          ]}
-        >
+          className={`text-center ${textVariantClass[variant]} ${textSizeClass[size]}`}
+          style={textStyle}>
           {children}
         </Text>
       )}
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  base: {
-    borderRadius: Radius.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    gap: Spacing[2],
-  },
-  fullWidth: {
-    width: '100%',
-  },
-  disabled: {
-    opacity: 0.5,
-  },
-
-  // Variants
-  primary: {
-    backgroundColor: Colors.primary,
-  },
-  outline: {
-    backgroundColor: Colors.transparent,
-    borderWidth: 1.5,
-    borderColor: Colors.border,
-  },
-  ghost: {
-    backgroundColor: Colors.transparent,
-  },
-  secondary: {
-    backgroundColor: Colors.muted,
-  },
-  destructive: {
-    backgroundColor: Colors.destructive,
-  },
-
-  // Sizes
-  size_sm: {
-    paddingHorizontal: Spacing[3],
-    paddingVertical: Spacing[1.5],
-    borderRadius: Radius.sm,
-  },
-  size_md: {
-    paddingHorizontal: Spacing[4],
-    paddingVertical: Spacing[2.5],
-  },
-  size_lg: {
-    paddingHorizontal: Spacing[6],
-    paddingVertical: Spacing[3.5],
-  },
-
-  // Text base
-  text: {
-    fontFamily: Fonts.semiBold,
-    textAlign: 'center',
-  },
-
-  // Text variants
-  text_primary: { color: Colors.primaryForeground },
-  text_outline: { color: Colors.foreground },
-  text_ghost: { color: Colors.foreground },
-  text_secondary: { color: Colors.foreground },
-  text_destructive: { color: Colors.destructiveForeground },
-  textDisabled: { opacity: 0.7 },
-
-  // Text sizes
-  textSize_sm: { fontSize: FontSizes.sm },
-  textSize_md: { fontSize: FontSizes.base },
-  textSize_lg: { fontSize: FontSizes.md },
-});
