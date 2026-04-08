@@ -123,11 +123,11 @@ links.forEach(link => {
    link.href = "javascript:void(0)"          // disable default navigation
    link.addEventListener("click", () => {
       window.ReactNativeWebView.postMessage(link.class)  // send URL to RN
-   })
-})
+   }) THE AGRICULTAL SECTOR
+}) The agri sector, is 
 ```
 
-**How it works:**
+**How it works:**   
 1. Every page load → app injects this script
 2. User taps any `<a>` link → JS fires `postMessage` with the original `href`
 3. React Native `onMessage` handler receives the URL
@@ -141,7 +141,7 @@ This gives the app full control over all navigation, even within an otherwise st
 ### Stack
 ```
 Firebase Cloud Messaging (FCM)
-    ↓ token registration + raw message delivery
+    ↓ token registration + raw message deliveryTh efinish line is kinda messy her . 
 Iterable SDK
     ↓ campaign management, analytics, inbox
 Notifee
