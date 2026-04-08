@@ -1,98 +1,47 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  Image,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React from 'react';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { Colors } from '../constants/colors';
-import { Fonts, FontSizes, Spacing, Radius } from '../constants/fonts';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ArrowLeft, ChevronRight } from 'lucide-react-native';
+import type { RootStackParamList } from '../navigation/types';
 import { trades } from '../constants/trades';
-import AppHeader from '../components/shared/AppHeader';
+
+type NavProp = NativeStackNavigationProp<RootStackParamList>;
 
 export default function TradesScreen() {
-  const insets = useSafeAreaInsets();
-  const navigation = useNavigation<any>();
-  const [search, setSearch] = useState('');
-
-  const filtered = trades.filter((t) =>
-    t.name.toLowerCase().includes(search.toLowerCase()),
-  );
+  const navigation = useNavigation<NavProp>();
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <AppHeader title="Browse Trades" showBack />
-      <View style={styles.searchBar}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search trades..."
-          placeholderTextColor={Colors.mutedForeground}
-          value={search}
-          onChangeText={setSearch}
-        />
+    <SafeAreaView className="flex-1 bg-white">
+      <View className="border-border flex-row items-center border-b px-4 py-3">
+        <TouchableOpacity onPress={() => navigation.goBack()} className="mr-3" activeOpacity={0.7}>
+          <ArrowLeft size={20} color="#0F1729" />
+        </TouchableOpacity>
+        <Text className="text-foreground text-xl font-semibold">All Trades</Text>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.list}>
-        <Text style={styles.count}>{filtered.length} trades found</Text>
-        {filtered.map((trade) => (
+      <FlatList
+        data={trades}
+        keyExtractor={(item) => item.slug}
+        contentContainerClassName="px-4 py-2"
+        renderItem={({ item }) => (
           <TouchableOpacity
-            key={trade.slug}
-            style={styles.tradeCard}
-            activeOpacity={0.75}
+            className="border-border flex-row items-center justify-between border-b py-4"
             onPress={() =>
               navigation.navigate('TradeDetail', {
-                slug: trade.slug,
-                serviceSlug: trade.serviceSlug,
+                serviceSlug: item.serviceSlug,
+                tradeSlug: item.slug,
               })
             }
-          >
-            <Image source={{ uri: trade.imageUrl }} style={styles.tradeImage} />
-            <View style={styles.tradeInfo}>
-              <Text style={styles.tradeName}>{trade.name}</Text>
-              <Text style={styles.tradeDesc} numberOfLines={2}>{trade.description}</Text>
+            activeOpacity={0.7}>
+            <View className="flex-1">
+              <Text className="text-foreground text-lg">{item.name}</Text>
+              <Text className="text-muted-foreground mt-0.5 text-sm">{item.serviceSlug}</Text>
             </View>
-            <Text style={styles.arrow}>›</Text>
+            <ChevronRight size={18} color="#6B7280" />
           </TouchableOpacity>
-        ))}
-      </ScrollView>
-    </View>
+        )}
+      />
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.background },
-  searchBar: { paddingHorizontal: Spacing[4], paddingVertical: Spacing[3] },
-  searchInput: {
-    height: 48,
-    borderWidth: 1.5,
-    borderColor: Colors.border,
-    borderRadius: Radius.md,
-    paddingHorizontal: Spacing[3],
-    fontSize: FontSizes.base,
-    fontFamily: Fonts.regular,
-    color: Colors.foreground,
-    backgroundColor: Colors.background,
-  },
-  list: { paddingHorizontal: Spacing[4], paddingBottom: Spacing[8] },
-  count: { fontFamily: Fonts.medium, fontSize: FontSizes.sm, color: Colors.mutedForeground, marginBottom: Spacing[3] },
-  tradeCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: Colors.border,
-    borderRadius: Radius.lg,
-    overflow: 'hidden',
-    marginBottom: Spacing[3],
-    backgroundColor: Colors.card,
-    height: 80,
-  },
-  tradeImage: { width: 80, height: 80 },
-  tradeInfo: { flex: 1, paddingHorizontal: Spacing[3], gap: Spacing[1] },
-  tradeName: { fontFamily: Fonts.semiBold, fontSize: FontSizes.base, color: Colors.foreground },
-  tradeDesc: { fontFamily: Fonts.regular, fontSize: FontSizes.xs, color: Colors.mutedForeground, lineHeight: 16 },
-  arrow: { fontSize: 24, color: Colors.mutedForeground, paddingRight: Spacing[3] },
-});
