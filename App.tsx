@@ -1,12 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import React, { useCallback} from 'react';
+import { View, Text, TextInput } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
+import '@/global.css';
+
 import {
   useFonts,
+  SpaceGrotesk_300Light,
   SpaceGrotesk_400Regular,
   SpaceGrotesk_500Medium,
   SpaceGrotesk_600SemiBold,
@@ -15,8 +18,25 @@ import {
 import { AuthProvider } from './src/contexts/AuthContext';
 import AppNavigator from './src/navigation/AppNavigator';
 
+const RNText = Text as unknown as { defaultProps?: { style?: unknown } };
+RNText.defaultProps = RNText.defaultProps || {};
+RNText.defaultProps.style = [RNText.defaultProps.style, { fontFamily: 'SpaceGrotesk_400Regular' }];
+
+const RNTextInput = TextInput as unknown as { defaultProps?: { style?: unknown } };
+RNTextInput.defaultProps = RNTextInput.defaultProps || {};
+RNTextInput.defaultProps.style = [
+  RNTextInput.defaultProps.style,
+  { fontFamily: 'SpaceGrotesk_400Regular' },
+];
+
 // Keep splash screen visible while loading fonts
 SplashScreen.preventAutoHideAsync();
+
+// Animated splash: 1s fade-out
+SplashScreen.setOptions({
+  duration: 1000,
+  fade: true,
+});
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,28 +48,20 @@ const queryClient = new QueryClient({
 });
 
 export default function App() {
-  const [appIsReady, setAppIsReady] = useState(false);
-
-  const [fontsLoaded, fontError] = useFonts({
+  const [appLoaded, appError] = useFonts({
+    SpaceGrotesk_300Light,
     SpaceGrotesk_400Regular,
     SpaceGrotesk_500Medium,
     SpaceGrotesk_600SemiBold,
     SpaceGrotesk_700Bold,
   });
-
-  useEffect(() => {
-    if (fontsLoaded || fontError) {
-      setAppIsReady(true);
-    }
-  }, [fontsLoaded, fontError]);
-
   const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
+    if (appLoaded || appError) {
       await SplashScreen.hideAsync();
     }
-  }, [appIsReady]);
+  }, [appLoaded, appError]);
 
-  if (!appIsReady) {
+  if (!appLoaded && !appError) {
     return null;
   }
 

@@ -3,13 +3,16 @@
     "name": "The Builder Network",
     "slug": "the-builder-network",
     "version": "1.0.0",
+    "description": "Find trusted tradespeople for your home. Post a job and get quotes from verified local tradespeople.",
+    "githubUrl": "https://github.com/thebuildernetwork/tbn-app",
     "orientation": "portrait",
     "icon": "./assets/favicons/android-chrome-512x512.png",
     "userInterfaceStyle": "light",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "backgroundColor": "#ffffff",
+    "primaryColor": "#0a68ff",
+    "assetBundlePatterns": ["**/*"],
     "ios": {
+      "backgroundColor": "#ffffff",
       "supportsTablet": true,
       "bundleIdentifier": "com.thebuildernetwork.app",
       "infoPlist": {
@@ -20,6 +23,8 @@
       "barStyle": "light-content"
     },
     "android": {
+      "userInterfaceStyle": "light",
+      "backgroundColor": "#ffffff",
       "adaptiveIcon": {
         "foregroundImage": "./assets/favicons/android-chrome-512x512.png",
         "backgroundColor": "#ffffff"
@@ -27,13 +32,36 @@
       "package": "com.thebuildernetwork.app"
     },
     "web": {
-      "favicon": "./assets/favicons/android-chrome-512x512.png"
+      "favicon": "./assets/favicons/android-chrome-512x512.png",
+      "bundler": "metro"
     },
+
     "experiments": {
       "tsconfigPaths": true
     },
+    "platforms": ["android", "ios", "web"],
     "plugins": [
-      "expo-splash-screen"
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#ffffff",
+          "image": "./assets/favicons/logo-icon.png",
+          "imageWidth": 200
+        }
+      ],
+      ["expo-system-ui"],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "node_modules/@expo-google-fonts/space-grotesk/SpaceGrotesk_300Light.ttf",
+            "node_modules/@expo-google-fonts/space-grotesk/SpaceGrotesk_400Regular.ttf",
+            "node_modules/@expo-google-fonts/space-grotesk/SpaceGrotesk_500Medium.ttf",
+            "node_modules/@expo-google-fonts/space-grotesk/SpaceGrotesk_600SemiBold.ttf",
+            "node_modules/@expo-google-fonts/space-grotesk/SpaceGrotesk_700Bold.ttf"
+          ]
+        }
+      ]
     ],
     "extra": {
       "eas": {
@@ -41,4 +69,4 @@
       }
     }
   }
-  }
+}

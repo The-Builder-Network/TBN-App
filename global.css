@@ -1,3 +1,188 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* The Builder Network Minimal Design System */
+
+@layer base {
+  :root {
+    /* Core colors - Navy, White, Black, Gray only */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Primary - Deep Navy */
+    --primary: 217 100% 52%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Neutral gray for subtle elements */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    /* Muted backgrounds */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+
+    /* Accent - Slightly lighter navy */
+    --accent: 217 100% 52%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* UI elements */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 100% 52%;
+    --radius: 0.5rem;
+
+    /* Extended palette - Gray scale only */
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --info: 199 89% 48%;
+    --info-foreground: 0 0% 100%;
+
+    /* Rating stars - keep neutral */
+    --star: 45 93% 47%;
+    --star-empty: 220 13% 91%;
+
+    /* Trust/Verification */
+    --verified: 217 100% 52%;
+
+    /* Sidebar */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 217 100% 52%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217 100% 52%;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 0 0% 98%;
+
+    --card: 222 47% 14%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 222 47% 14%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 217 100% 52%;
+
+    --secondary: 222 47% 18%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 222 47% 18%;
+    --muted-foreground: 220 9% 65%;
+
+    --accent: 222 47% 22%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 222 47% 20%;
+    --input: 222 47% 20%;
+    --ring: 0 0% 80%;
+
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 217 100% 52%;
+    --sidebar-accent: 222 47% 18%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 222 47% 20%;
+    --sidebar-ring: 0 0% 80%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    text {
+      @apply font-sans;
+    }
+    @apply font-sans;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  /* Hero section with navy background */
+  .hero-gradient {
+    background: hsl(217 100% 52%);
+  }
+
+  /* Card hover effect */
+  .card-hover {
+    @apply transition-all duration-200 ease-out;
+  }
+  .card-hover:hover {
+    @apply -translate-y-0.5 shadow-md;
+  }
+
+  /* Star rating */
+  .star-filled {
+    color: hsl(var(--star));
+  }
+  .star-empty {
+    color: hsl(var(--star-empty));
+  }
+
+  /* Avatar ring */
+  .avatar-ring {
+    @apply shadow-sm ring-2 ring-white;
+  }
+}
+
+@layer utilities {
+  /* Smooth scroll */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+
+  /* Hide scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.pattern {
+  background-color: #0a68ff;
+  opacity: 1;
+  background-size: 5px 5px;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #ef3e50 0,
+    #ef3e50 0.5px,
+    #0a68ff 0,
+    #0a68ff 80%
+  );
+}
